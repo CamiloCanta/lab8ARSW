@@ -22,20 +22,24 @@ var app = (function () {
         var socket = new SockJS('/stompendpoint');
         stompClient = Stomp.over(socket);
     
-        // subscribe to /topic/newpoint when connection succeeds
+        // connect to WebSocket and subscribe to topic with drawingId
+        var drawingId = document.getElementById('drawingId').value;
         stompClient.connect({}, function (frame) {
             console.log('Connected: ' + frame);
-            stompClient.subscribe('/topic/newpoint', function (eventbody) {
+            stompClient.subscribe('/topic/newpoint.' + drawingId, function (eventbody) {
                 // extract coordinates from event
                 var body = eventbody.body;
                 var eventJSON = JSON.parse(body);
                 var x = eventJSON.x;
                 var y = eventJSON.y;
     
-                addPointToCanvas(new Point(x, y));
+                // draw point on canvas
+                var point = new Point(x, y);
+                addPointToCanvas(point);
             });
         });
     };
+    
     
     
 
@@ -58,14 +62,39 @@ var app = (function () {
             connectAndSubscribe();
         },
 
-        publishPoint: function(px,py){
-            var pt=new Point(px,py);
-            console.info("publishing point at "+pt);
-            addPointToCanvas(pt);
-
-            //publicar el evento
-            stompClient.send("/topic/newpoint", {}, JSON.stringify(pt)); 
+        connect: function() {
+            var drawingId = document.getElementById("drawingId").value;
+            if (drawingId.trim() == '') {
+                alert('Please enter a draw Id');
+                return;
+            }
+            var socket = new SockJS('/stompendpoint');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/newpoint.'+drawingId, function (eventbody) {
+                    var body = eventbody.body;
+                    var eventJSON = JSON.parse(body);
+                    var x = eventJSON.x;
+                    var y = eventJSON.y;
+                    var pt = new Point(x,y);
+                    addPointToCanvas(pt);
+                });
+            });
         },
+        
+
+        publishPoint: function (px, py) {
+            var drawingId = document.getElementById('drawingId').value;
+            var pt = new Point(px, py);
+            console.info("publishing point at " + pt);
+            addPointToCanvas(pt);
+        
+            // publish event to topic with drawingId
+            stompClient.send("/topic/newpoint." + drawingId, {}, JSON.stringify(pt));
+        },
+        
+        
 
         disconnect: function () {
             if (stompClient !== null) {
