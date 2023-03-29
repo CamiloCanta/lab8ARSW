@@ -1,5 +1,7 @@
 ### Escuela Colombiana de Ingeniería
 ### Arquitecturas de Software - ARSW
+###Autor: Camilo Cantillo Tatis
+
 ### Laboratorio - Broker de Mensajes STOMP con WebSockets + HTML5 Canvas.
 
 
@@ -41,14 +43,23 @@ Para esto, realice lo siguiente:
 	//enviando un objeto creado a partir de una clase
 	stompClient.send("/topic/newpoint", {}, JSON.stringify(pt)); 
 	```
+![image](https://user-images.githubusercontent.com/108955358/228418223-2aa9b647-8bf1-4fc8-ba1d-0ed019af2878.png)
+
 
 2. Dentro del módulo JavaScript modifique la función de conexión/suscripción al WebSocket, para que la aplicación se suscriba al tópico "/topic/newpoint" (en lugar del tópico /TOPICOXX). Asocie como 'callback' de este suscriptor una función que muestre en un mensaje de alerta (alert()) el evento recibido. Como se sabe que en el tópico indicado se publicarán sólo puntos, extraiga el contenido enviado con el evento (objeto JavaScript en versión de texto), conviértalo en objeto JSON, y extraiga de éste sus propiedades (coordenadas X y Y). Para extraer el contenido del evento use la propiedad 'body' del mismo, y para convertirlo en objeto, use JSON.parse. Por ejemplo:
 
 	```javascript
 	var theObject=JSON.parse(message.body);
 	```
+	
+![image](https://user-images.githubusercontent.com/108955358/228418278-7e6c215e-500d-4461-a0a8-ee5e17c0b4ec.png)
+
+
 3. Compile y ejecute su aplicación. Abra la aplicación en varias pestañas diferentes (para evitar problemas con el caché del navegador, use el modo 'incógnito' en cada prueba).
 4. Ingrese los datos, ejecute la acción del botón, y verifique que en todas la pestañas se haya lanzado la alerta con los datos ingresados.
+
+![image](https://user-images.githubusercontent.com/108955358/228418320-6d73fa2c-a3b0-49dc-b384-002bdcd23e2a.png)
+
 
 5. Haga commit de lo realizado, para demarcar el avance de la parte 2.
 
