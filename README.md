@@ -1,6 +1,6 @@
 ### Escuela Colombiana de Ingeniería
 ### Arquitecturas de Software - ARSW
-###Autor: Camilo Cantillo Tatis
+### Autor: Camilo Cantillo Tatis
 
 ### Laboratorio - Broker de Mensajes STOMP con WebSockets + HTML5 Canvas.
 
