@@ -13,36 +13,10 @@ var app = (function () {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
         ctx.beginPath();
-        ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
-        ctx.stroke();
+        ctx.arc(point.x, point.y, 1, 0, 2 * Math.PI);
+        ctx.fill();
     };
     
-    
-    var getMousePosition = function (evt) {
-        canvas = document.getElementById("canvas");
-        var rect = canvas.getBoundingClientRect();
-        return {
-            x: evt.clientX - rect.left,
-            y: evt.clientY - rect.top
-        };
-    };
-
-
-    // var connectAndSubscribe = function () {
-    //     console.info('Connecting to WS...');
-    //     var socket = new SockJS('/stompendpoint');
-    //     stompClient = Stomp.over(socket);
-        
-    //     //subscribe to /topic/TOPICXX when connections succeed
-    //     stompClient.connect({}, function (frame) {
-    //         console.log('Connected: ' + frame);
-    //         stompClient.subscribe('/topic/TOPICXX', function (eventbody) {
-                
-                
-    //         });
-    //     });
-
-    // };
     var connectAndSubscribe = function () {
         console.info('Connecting to WS...');
         var socket = new SockJS('/stompendpoint');
@@ -58,8 +32,7 @@ var app = (function () {
                 var x = eventJSON.x;
                 var y = eventJSON.y;
     
-                // display coordinates in alert
-                alert('Received new point\nX: ' + x + '\nY: ' + y);
+                addPointToCanvas(new Point(x, y));
             });
         });
     };
@@ -71,6 +44,16 @@ var app = (function () {
         init: function () {
             var can = document.getElementById("canvas");
             
+            can.addEventListener("mousedown", function(event) {
+                // Obtener coordenadas x e y del evento
+                var rect = can.getBoundingClientRect();
+                var x = event.clientX - rect.left;
+                var y = event.clientY - rect.top;
+        
+                // Publicar punto en el servidor
+                app.publishPoint(x, y);
+            });
+
             //websocket connection
             connectAndSubscribe();
         },
