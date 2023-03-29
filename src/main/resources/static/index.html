@@ -20,6 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="/webjars/jquery/jquery.min.js"></script>
         <script src="/webjars/sockjs-client/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/stomp.min.js"></script>
@@ -30,9 +31,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     
     <body onload="app.init()">
-        X:<input id="x" type="number"/>
-        Y:<input id="y" type="number"/>        
-        <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
-        <canvas id="canvas" width="800" height="600"></canvas>
+        <div display="column">
+            <div>
+                X:<input id="x" type="number"/>
+                Y:<input id="y" type="number"/>  
+                <button onclick="app.publishPoint($('#x').val(),$('#y').val())">Send point</button>
+                <br>
+                <br>
+            </div>
+            <div>
+                <canvas id="canvas" width="800" height="600" style="border: 2px solid black"></canvas>
+            </div>
+        </div>
+              
+        
+        
     </body>
 </html>
